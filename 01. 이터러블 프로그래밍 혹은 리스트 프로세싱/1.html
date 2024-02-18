@@ -23,7 +23,12 @@
         console.log(acc)
     }
     f1(3, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+</script>
 
+2. if를 filter로
+3. 값 변화 후 변수 할당을 map으로
+4. break를 take로
+<script>
     function f2 (limit, list) {
         let acc = 0
         for (const a of L.take(limit, L.map(a => a * a, L.filter(a => a % 2, list)))) {
@@ -34,10 +39,34 @@
     f2(3, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 </script>
 
-2. if를 filter로
-3. 값 변화 후 변수 할당을 map으로
-4. break를 take로
 5. 축약 및 합산을 reduce로
+<script>
+    const add = (a, b) => a + b
+    function f3 (limit, list) {
+        // console.log(
+        //     [...L.take(limit, 
+        //         L.map(a => a * a, 
+        //             L.filter(a => a % 2, list)))])
+
+        // console.log(
+        //     _.reduce(add, 
+        //         L.take(limit, 
+        //             L.map(a => a * a, 
+        //                 L.filter(a => a % 2, list)))))
+
+        // go를 활용하여 pipe라인으로 위에서 아래로 진행되도록 수정
+        _.go(
+            list,
+            L.filter(a => a % 2), // if를 filter로
+            L.map(a => a * a), // 값 변화 후 변수 할당을 map으로
+            L.take(limit), // break를 take로
+            _.reduce(add), // 상위 스코프에 변수를 선언하고 축약 및 합산을 reduce로
+            console.log
+        )
+    }
+    f3(3, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+</script>
+
 
 6. while을 range로
 7. 효과를 each로
