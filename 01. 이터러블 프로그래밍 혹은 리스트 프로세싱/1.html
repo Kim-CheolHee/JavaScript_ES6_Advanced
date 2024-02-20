@@ -69,7 +69,7 @@
 
 
 6. while을 range로
-7. 효과를 each로
+7. 효과를 each로 구분
 <script>
     function f4(end) {
         let i = 1
@@ -80,8 +80,14 @@
     }
     f4(10)
 
-    function f5(end) {
+    /* function f5(end) {
         _.each(console.log, L.range(1, end, 2)) // 1부터 시작, end까지, 2 step씩 증가
+    } */
+    function f5(end) {
+        _.go(
+            L.range(1, end, 2),
+            _.each(console.log)
+        )
     }
     f5(10)
 </script>
