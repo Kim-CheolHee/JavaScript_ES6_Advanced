@@ -33,7 +33,32 @@
 </script>
 
 2. reduce 하나 보다 map + filter + reduce
-3. 
+<script>
+    console.log(
+        _.reduce((total, u) => u.age >= 30 ? total : total + u.age,
+            0,
+            users
+        )
+    )
+
+    console.log(
+        _.reduce(add,
+            L.map(u => u.age,
+                L.filter(u => u.age < 30, users)
+            )
+        )
+    )
+
+    console.log(
+        _.reduce(add,
+            L.map(n => n < 30,
+                L.filter(u => u.age < 30, users)
+            )
+        )
+    )
+</script>
+
+3. query, queryToObject
 
 </body>
 </html>
