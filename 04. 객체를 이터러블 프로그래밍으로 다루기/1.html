@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../fx.js"></script>
+</head>
+<body>
+
+## 객체를 이터러블 프로그래밍으로 다루기
+<script>
+    const obj1 = {
+        a: 1,
+        b: 2,
+        c: 3,
+        d: 4
+    }
+</script>
+
+1. values
+<script>
+    console.log(Object.values(obj1))
+
+    L.values = function *(obj) {
+        for (const k in obj) {
+            console.log(k)
+            yield obj[k]
+        }
+    }
+
+    _.go(
+        obj1,
+        L.values,
+        L.map(a => a + 10),
+        L.take(2),
+        _.reduce((a, b) => a + b),
+        console.log
+    )
+</script>
+
+2. entries
+3. keys
+4. 어떠한 값이든 이터러블 프로그래밍으로 다루기
+5. object
+6. mapObject
+7. pick
+8. indexBy
+9. indexBy 된 값을 filter 하기
+
+</body>
+</html>
