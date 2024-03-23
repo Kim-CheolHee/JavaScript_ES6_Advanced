@@ -55,7 +55,6 @@
         _.reduce(Object.assign),
         _.each(console.log)
     )
-    console.clear()
 </script>
 
 3. keys
@@ -65,15 +64,40 @@
             yield k
         }
     }
-
+    
     _.go(
         obj1,
         L.keys,
         _.each(console.log)
     )
+    console.clear()
 </script>
 
 4. 어떠한 값이든 이터러블 프로그래밍으로 다루기
+ - 이터러블로 이터러블 프로그래밍으로
+ - 객체를 제너레이터를 이용해서 이터레이터로 만들어서 이터러블 프로그래밍
+ - 어떤 제너레이터든 이터레이터로 만들어서 이터러블 프로그래밍
+<script>
+    const g1 = function *(stop){
+        let i = -1
+        while (++i < stop) {
+            console.log(i)
+            yield 10
+            if (false) yield 20 + 30
+            yield 30
+        }
+    }
+    // console.log([...g1(3)])
+    console.log([...L.take(2, g1(3))])
+
+    _.go(
+        g1(10),
+        L.take(2),
+        _.reduce((a, b) => a + b),
+        console.log
+    )
+</script>
+
 5. object
 6. mapObject
 7. pick
