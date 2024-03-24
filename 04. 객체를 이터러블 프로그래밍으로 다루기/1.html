@@ -118,7 +118,6 @@
     m.set('b', 20)
     m.set('c', 30)
     console.log(m)
-    console.clear()
 </script>
 
 6. mapObject
@@ -135,9 +134,18 @@
     // [['a', 11], ['b', 12], ['c', 13]]
     // { a: 11, } ...
     // { a: 11, b: 12, c: 13 }
+    console.clear()
 </script>
 
 7. pick
+<script>
+    const obj2 = { a: 1, b: 2, c: 3, d: 4, e: 5 }
+
+    const pick = _ => _
+
+    console.log(lick(['b', 'c'], obj2))
+</script>
+
 8. indexBy
 9. indexBy 된 값을 filter 하기
 
