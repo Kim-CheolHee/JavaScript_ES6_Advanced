@@ -120,8 +120,17 @@
             L.takeUntil(({ length }) => length < 3),
             _.flat
         )
-        console.log(payments)
+
+        // 결제가 실제로 완료된 가맹점 측 주문서 id를 추출
+        const orderIds = await _.go(
+            payments,
+            _.map(p => p.order_id),
+            DB.getOrders,
+            _.map(({ id }) => id)
+        )
+        console.log(orderIds)
     }
+
 
     job()
 </script>
