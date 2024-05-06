@@ -191,27 +191,29 @@
             img.onload = () => resolve(img)
             img.src = img.getAttribute('lazy-src')
           })),
-          lazy => { // 동시 이미지 로드 부하 조절 코드
-            let r = L.range(Infinity)
-            return _.go(
-              lazy,
-              _.groupBy(_ => Math.floor(r.next().value / limit)),
-              L.values,
-              L.map(L.map(f => f())),
-              L.map(C.takeAll),
-              _.each(_.each($.addClass('fade-in')))
-            )
-          }
+          C.takeAllWithLimit(limit),
+          _.each(_.each($.addClass('fade-in')))
           // C.takeAll, // 한번에 이미지 불러오기
           // _.each($.addClass('fade-in')) // 하나씩 이미지 불러오기
-        ),
+        )
+
+        C.takeAllWithLimit = _.curry((limit, iter) => {
+          let r = L.range(Infinity)
+          return _.go(
+            iter,
+            _.groupBy(_ => Math.floor(r.next().value / limit)),
+            L.values,
+            L.map(L.map(f => f())),
+            L.map(C.takeAll)
+          )
+        })
 
         _.go(
             Images.fetch(),
             Images.tmpl,
             $.el,
             $.append($.qs('body')),
-            Images.loader(9),
+            Images.loader(3),
             $.findAll('.remove'),
             $.on('click', async ({ currentTarget: ct }) =>
                 await Ui.confirm('정말 삭제하시겠습니까?') &&
