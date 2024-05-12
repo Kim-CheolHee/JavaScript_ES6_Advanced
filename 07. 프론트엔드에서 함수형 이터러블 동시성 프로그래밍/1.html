@@ -197,33 +197,10 @@
           // _.each($.addClass('fade-in')) // 하나씩 이미지 불러오기
         )
 
-        C.takeAllWithLimit = _.curry((limit, iter) => {
+        _.groupBySize = _.curry((size, iter) => {
           let r = L.range(Infinity)
-          return _.go(
-            iter,
-            _.groupBy(_ => Math.floor(r.next().value / limit)),
-            L.values,
-            L.map(L.map(f => f())),
-            L.map(C.takeAll)
-          )
+          return _.groupBy(_ => Math.floor(r.next().value / size), iter)
         })
-
-        _.go(
-            Images.fetch(),
-            Images.tmpl,
-            $.el,
-            $.append($.qs('body')),
-            Images.loader(3),
-            $.findAll('.remove'),
-            $.on('click', async ({ currentTarget: ct }) =>
-                await Ui.confirm('정말 삭제하시겠습니까?') &&
-                _.go(
-                    ct,
-                    $.closest('.image'),
-                    $.remove
-                )
-            )
-        )
 
         const Ui = {}
 
@@ -266,6 +243,20 @@
           ]
         )
 
+        Ui.remover = (btnSel, targetSel, before = a => a, after = a => a) => _.tap(
+          $.findAll(btnSel),
+          $.on('click', async ({ currentTarget: ct }) =>
+              await Ui.confirm('정말 삭제하시겠습니까?') &&
+              _.go(
+                  ct,
+                  $.closest(targetSel),
+                  _.tap(before),
+                  $.remove,
+                  _.tap(after)
+              )
+          )
+        )
+
         // Ui.confirm('삭제 하시겠습니까?')
         // Ui.alert('삭제되었습니다.')
         /* Ui.message(
@@ -276,6 +267,23 @@
           ],
           '삭제 하시겠습니까?'
         ) */
+
+        C.takeAllWithLimit = _.curry((limit, iter) => _.go(
+            iter,
+            _.groupBySize(limit),
+            L.values,
+            L.map(L.map(f => f())),
+            L.map(C.takeAll)
+          ))
+
+        _.go(
+            Images.fetch(),
+            Images.tmpl,
+            $.el,
+            $.append($.qs('body')),
+            Ui.remover('.remove', '.image', _ => console.log('서버 통신!')),
+            Images.loader(3),
+        )
     </script>
 
 </body>
